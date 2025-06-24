@@ -1,0 +1,79 @@
+# GitHub Actions workflow to build and deploy the Vite app to GitHub Pages
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # Or your default branch
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18' # Specify your Node.js version, LTS is a good choice
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build application
+        run: npm run build
+        # env:
+          # VITE_BASE_URL: /<repository-name>/ # This will be set dynamically if needed
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist' # Vite's default build output directory
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        # with:
+          # publish_dir: ./dist
+          # github_token: ${{ secrets.GITHUB_TOKEN }}
+          # cname: your-custom-domain.com # Optional: if you have a custom domain
+          # user_name: 'github-actions[bot]'
+          # user_email: 'github-actions[bot]@users.noreply.github.com'
+          # commit_message: 'Deploy to GitHub Pages'
+          # allow_empty_commit: false
+          # keep_files: false
+          # force_orphan: true # Recommended to avoid history bloat on gh-pages
+          # publish_branch: gh-pages # Default branch for GitHub Pages
+          # Note: Using actions/deploy-pages now, which is preferred over peaceiris/actions-gh-pages for new setups.
+          # The peaceiris action is still valid but this is the more modern approach.
+          # The configuration for vite.config.ts base path is still crucial.
+          # The deploy-pages action works with configure-pages and upload-pages-artifact.
+          # It deploys from the uploaded artifact, not directly from a local directory.
+          # GITHUB_TOKEN is automatically available and has the right permissions due to `permissions` block above.
+          # The `publish_branch` is implicitly `gh-pages` when using `actions/deploy-pages`.
+
+# End of workflow file placeholder
+# Further steps will refine this, especially the build step with VITE_BASE_URL if needed,
+# and the deployment step configuration.
+# The modern approach uses actions/configure-pages, actions/upload-pages-artifact, and actions/deploy-pages.
+# The peaceiris/actions-gh-pages is an alternative older method.
+# I've opted for the modern GitHub-native actions.
+# Permissions are important for the GITHUB_TOKEN to work correctly.
+# The `environment` block is also key for GitHub Pages deployments.
