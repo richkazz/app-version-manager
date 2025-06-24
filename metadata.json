@@ -1,0 +1,5 @@
+{
+  "name": "App Version Manager",
+  "description": "A web application to manage and track versions for multiple applications, storing data locally in the browser.",
+  "requestFramePermissions": []
+}
