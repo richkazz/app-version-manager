@@ -7,6 +7,7 @@ import AppSelector from './components/AppSelector';
 import VersionManager from './components/VersionManager';
 import Modal from './components/Modal';
 import AppConfigForm from './components/AppConfigForm';
+import DataManagement from './components/DataManagement'; // Import the new component
 // import { PlusIcon } from './components/icons'; // PlusIcon seems unused in App.tsx directly
 
 const App: React.FC = () => {
@@ -155,7 +156,8 @@ const App: React.FC = () => {
         />
       </Modal>
 
-      <footer className="text-center mt-12 py-6 border-t border-slate-700">
+      <footer className="text-center mt-12 py-6 border-t border-slate-700 space-y-6">
+        <DataManagement setAllAppConfigs={setAllAppConfigs} />
         <p className="text-sm text-slate-500">
           App Version Manager &copy; {new Date().getFullYear()}. Data stored locally in your browser.
         </p>
