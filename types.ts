@@ -3,13 +3,19 @@ export interface VersionEntry {
   id: string; // Unique ID for React keys and easier updates/deletes
   version: string;
   force_update: boolean;
-  release_date: string; // ISO 8601 string format
+  release_date: string; 
+  update_title: string;
+  update_features: string;
+  update_message: string
 }
 
 export interface AppConfig {
   id: string; // Unique ID for the app configuration
   name: string;
   type: string; // e.g., "iOS", "Android", "Web"
+  title: string;
+  features: string;
+  message: string;
   versions: VersionEntry[];
 }
 
